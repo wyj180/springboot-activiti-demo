@@ -1,0 +1,46 @@
+server:
+  port: 8080
+
+spring:
+# 数据库配置
+  datasource:
+    username: root
+    password: root
+    url: jdbc:mysql://localhost:3306/activiti6?useUnicode=true&nullCatalogMeansCurrent=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+#activiti配置
+  activiti:
+    database-schema-update: true
+    check-process-definitions: false
+    #history-level: full
+    #activiti7 添加这个配置，才会生成25张表，否则只有17张
+    #activiti6可以不添加，但是第一次启动只有16张表，启动两次才有26张表
+    #db-history-used: true
+#freemarker模板配置
+  freemarker:
+    #模板的模式，支持 HTML, XML TEXT JAVASCRIPT
+    mode: HTML5
+    #编码 可不用配置
+    encoding: UTF-8
+    #内容类别,可不用配置
+    content-type: text/html
+    #开发配置为false,避免修改模板还要重启服务器
+    cache: false
+    #配置模板路径，默认是templates，可以不用配置
+    tempalte-loader-path: classpath:/templates
+#配置日志
+logging:
+  config: classpath:logging-config.xml
+  level:
+    org.springframework.boot.autoconfigure: ERROR
+# mybatis的xml查询文件和实体类位置配置
+mybatis:
+  mapper-locations: classpath*:mappers/*.xml
+  type-aliases-package: com.neimeng.workflow.entity.pojo
+
+# 启动工程部署流程标识
+process:
+  deploy: false
+
+
+

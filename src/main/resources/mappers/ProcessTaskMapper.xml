@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neimeng.workflow.dao.ProcessTaskMapper">
+  <resultMap id="BaseResultMap" type="com.neimeng.workflow.entity.pojo.ProcessTask">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="task_id" jdbcType="VARCHAR" property="taskId" />
+    <result column="task_name" jdbcType="VARCHAR" property="taskName" />
+    <result column="proc_inst_id" jdbcType="VARCHAR" property="procInstId" />
+    <result column="approval_user" jdbcType="VARCHAR" property="approvalUser" />
+    <result column="approval_result" jdbcType="INTEGER" property="approvalResult" />
+    <result column="approval_time" jdbcType="TIMESTAMP" property="approvalTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.neimeng.workflow.entity.pojo.ProcessTask">
+    <result column="approval_comment" jdbcType="LONGVARCHAR" property="approvalComment" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, task_id, task_name, proc_inst_id, approval_user, approval_result, approval_time, 
+    create_time, update_time
+  </sql>
+  <sql id="Blob_Column_List">
+    approval_comment
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from process_task
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from process_task
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.neimeng.workflow.entity.pojo.ProcessTask">
+    insert into process_task (id, task_id, task_name, 
+      proc_inst_id, approval_user, approval_result, 
+      approval_time, create_time, update_time, 
+      approval_comment)
+    values (#{id,jdbcType=INTEGER}, #{taskId,jdbcType=VARCHAR}, #{taskName,jdbcType=VARCHAR}, 
+      #{procInstId,jdbcType=VARCHAR}, #{approvalUser,jdbcType=VARCHAR}, #{approvalResult,jdbcType=INTEGER}, 
+      #{approvalTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{approvalComment,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.neimeng.workflow.entity.pojo.ProcessTask">
+    insert into process_task
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="taskId != null">
+        task_id,
+      </if>
+      <if test="taskName != null">
+        task_name,
+      </if>
+      <if test="procInstId != null">
+        proc_inst_id,
+      </if>
+      <if test="approvalUser != null">
+        approval_user,
+      </if>
+      <if test="approvalResult != null">
+        approval_result,
+      </if>
+      <if test="approvalTime != null">
+        approval_time,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="approvalComment != null">
+        approval_comment,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="taskId != null">
+        #{taskId,jdbcType=VARCHAR},
+      </if>
+      <if test="taskName != null">
+        #{taskName,jdbcType=VARCHAR},
+      </if>
+      <if test="procInstId != null">
+        #{procInstId,jdbcType=VARCHAR},
+      </if>
+      <if test="approvalUser != null">
+        #{approvalUser,jdbcType=VARCHAR},
+      </if>
+      <if test="approvalResult != null">
+        #{approvalResult,jdbcType=INTEGER},
+      </if>
+      <if test="approvalTime != null">
+        #{approvalTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="approvalComment != null">
+        #{approvalComment,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.neimeng.workflow.entity.pojo.ProcessTask">
+    update process_task
+    <set>
+      <if test="taskId != null">
+        task_id = #{taskId,jdbcType=VARCHAR},
+      </if>
+      <if test="taskName != null">
+        task_name = #{taskName,jdbcType=VARCHAR},
+      </if>
+      <if test="procInstId != null">
+        proc_inst_id = #{procInstId,jdbcType=VARCHAR},
+      </if>
+      <if test="approvalUser != null">
+        approval_user = #{approvalUser,jdbcType=VARCHAR},
+      </if>
+      <if test="approvalResult != null">
+        approval_result = #{approvalResult,jdbcType=INTEGER},
+      </if>
+      <if test="approvalTime != null">
+        approval_time = #{approvalTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="approvalComment != null">
+        approval_comment = #{approvalComment,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.neimeng.workflow.entity.pojo.ProcessTask">
+    update process_task
+    set task_id = #{taskId,jdbcType=VARCHAR},
+      task_name = #{taskName,jdbcType=VARCHAR},
+      proc_inst_id = #{procInstId,jdbcType=VARCHAR},
+      approval_user = #{approvalUser,jdbcType=VARCHAR},
+      approval_result = #{approvalResult,jdbcType=INTEGER},
+      approval_time = #{approvalTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      approval_comment = #{approvalComment,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.neimeng.workflow.entity.pojo.ProcessTask">
+    update process_task
+    set task_id = #{taskId,jdbcType=VARCHAR},
+      task_name = #{taskName,jdbcType=VARCHAR},
+      proc_inst_id = #{procInstId,jdbcType=VARCHAR},
+      approval_user = #{approvalUser,jdbcType=VARCHAR},
+      approval_result = #{approvalResult,jdbcType=INTEGER},
+      approval_time = #{approvalTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neimeng.workflow.dao.ProcessDatasetMapper">
+  <resultMap id="BaseResultMap" type="com.neimeng.workflow.entity.pojo.ProcessDataset">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="process_status" jdbcType="INTEGER" property="processStatus" />
+    <result column="dataset_id" jdbcType="INTEGER" property="datasetId" />
+    <result column="proc_inst_id" jdbcType="VARCHAR" property="procInstId" />
+    <result column="dataset_name" jdbcType="VARCHAR" property="datasetName" />
+    <result column="priority" jdbcType="INTEGER" property="priority" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+
+  <resultMap id="TaskVoResultMap" type="com.neimeng.workflow.entity.vo.TaskVo" extends="BaseResultMap">
+    <result column="task_id" jdbcType="VARCHAR" property="taskId" />
+    <result column="task_name" jdbcType="VARCHAR" property="taskName" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, creator, process_status, dataset_id, proc_inst_id, dataset_name, priority, create_time, 
+    update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from process_dataset
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <!-- 根据流程实例ID查询关联数据集信息 -->
+  <select id="selectByProcessInstanceId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from process_dataset
+    where proc_inst_id = #{processInstanceId,jdbcType=VARCHAR}
+  </select>
+
+  <!-- 查询用户任务 -->
+  <select id="getTasksByAssignee" resultMap="TaskVoResultMap">
+    select t1.ID_ task_id, t1.NAME_ task_name, t2.* from act_ru_task t1
+    join process_dataset t2 on t1.PROC_INST_ID_ = t2.proc_inst_id
+    where t1.ASSIGNEE_ = #{assignee,jdbcType=VARCHAR}
+  </select>
+
+  <!-- 查询列表信息 -->
+  <select id="selectList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from process_dataset
+    order by create_time desc
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from process_dataset
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.neimeng.workflow.entity.pojo.ProcessDataset">
+    insert into process_dataset (id, creator, process_status, 
+      dataset_id, proc_inst_id, dataset_name, 
+      priority, create_time, update_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{processStatus,jdbcType=INTEGER}, 
+      #{datasetId,jdbcType=INTEGER}, #{procInstId,jdbcType=VARCHAR}, #{datasetName,jdbcType=VARCHAR}, 
+      #{priority,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.neimeng.workflow.entity.pojo.ProcessDataset">
+    insert into process_dataset
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="creator != null">
+        creator,
+      </if>
+      <if test="processStatus != null">
+        process_status,
+      </if>
+      <if test="datasetId != null">
+        dataset_id,
+      </if>
+      <if test="procInstId != null">
+        proc_inst_id,
+      </if>
+      <if test="datasetName != null">
+        dataset_name,
+      </if>
+      <if test="priority != null">
+        priority,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="creator != null">
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="processStatus != null">
+        #{processStatus,jdbcType=INTEGER},
+      </if>
+      <if test="datasetId != null">
+        #{datasetId,jdbcType=INTEGER},
+      </if>
+      <if test="procInstId != null">
+        #{procInstId,jdbcType=VARCHAR},
+      </if>
+      <if test="datasetName != null">
+        #{datasetName,jdbcType=VARCHAR},
+      </if>
+      <if test="priority != null">
+        #{priority,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.neimeng.workflow.entity.pojo.ProcessDataset">
+    update process_dataset
+    <set>
+      <if test="creator != null">
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="processStatus != null">
+        process_status = #{processStatus,jdbcType=INTEGER},
+      </if>
+      <if test="datasetId != null">
+        dataset_id = #{datasetId,jdbcType=INTEGER},
+      </if>
+      <if test="procInstId != null">
+        proc_inst_id = #{procInstId,jdbcType=VARCHAR},
+      </if>
+      <if test="datasetName != null">
+        dataset_name = #{datasetName,jdbcType=VARCHAR},
+      </if>
+      <if test="priority != null">
+        priority = #{priority,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.neimeng.workflow.entity.pojo.ProcessDataset">
+    update process_dataset
+    set creator = #{creator,jdbcType=VARCHAR},
+      process_status = #{processStatus,jdbcType=INTEGER},
+      dataset_id = #{datasetId,jdbcType=INTEGER},
+      proc_inst_id = #{procInstId,jdbcType=VARCHAR},
+      dataset_name = #{datasetName,jdbcType=VARCHAR},
+      priority = #{priority,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
